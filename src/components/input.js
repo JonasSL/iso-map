@@ -8,7 +8,15 @@ const Label = styled.div`
   margin-top: 1em;
 `
 
-export const InputForm = () => {
+const InputForm = ({ startSearch }) => {
+  const [address, setAddress] = React.useState(undefined)
+  const [time, setTime] = React.useState(undefined)
+  const [type, setType] = React.useState(undefined)
+
+  const search = () => {
+    startSearch(address, time, type)
+  }
+
   return (
     <div>
       <Label>Adresse</Label>
@@ -16,6 +24,8 @@ export const InputForm = () => {
         style={{ width: "500px" }}
         size="large"
         placeholder="Åhusene 3, Aarhus C"
+        onChange={event => setAddress(event.target.value)}
+        value={address}
       />
 
       <Label>Transporttid (minutter)</Label>
@@ -25,11 +35,17 @@ export const InputForm = () => {
         placeholder="30"
         min={1}
         max={60}
-        defaultValue={3}
+        onChange={event => setTime(event)}
+        value={time}
       />
 
       <Label>Type</Label>
-      <Select size="large" style={{ width: "500px" }} defaultValue="car">
+      <Select
+        size="large"
+        style={{ width: "500px" }}
+        value={type}
+        onChange={setType}
+      >
         <Option value="car">Bil</Option>
         <Option value="bike">Cykel</Option>
         <Option value="walk">Gå</Option>
@@ -37,14 +53,17 @@ export const InputForm = () => {
 
       <div>
         <Button
+          onClick={() => search()}
           size="large"
           type="primary"
           style={{ width: "500px", marginTop: "2em" }}
           icon={<SearchOutlined />}
         >
-          Search
+          Søg
         </Button>
       </div>
     </div>
   )
 }
+
+export default InputForm
